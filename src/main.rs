@@ -1,7 +1,14 @@
-const WORD_LIST: [&str; 5] = ["apple", "building", "bob", "notepad", "keyboard"];
+const WORD_LIST: [&str; 50] = [
+    "apple", "banana", "carrot", "dog", "elephant", "fig", "grape", "honey", "ice", "jelly", "kiwi",
+    "lemon", "mango", "nut", "orange", "peach", "quince", "raspberry", "strawberry", "tomato",
+    "unicorn", "vanilla", "watermelon", "xenon", "yogurt", "zucchini", "aardvark", "bear", "cat",
+    "dolphin", "eagle", "fox", "giraffe", "hippo", "iguana", "jaguar", "kangaroo", "lemur", "mouse",
+    "newt", "octopus", "panda", "quail", "raccoon", "seal", "tiger", "urchin", "vulture", "wombat",
+    "xerus"
+];
 
 use rand::Rng;
-fn choose_word(word_list: [&str; 5]) -> String {
+fn choose_word(word_list: [&str; 50]) -> String {
     let rng = rand::thread_rng().gen_range(0..WORD_LIST.len());
     return word_list[rng].to_string()
 }
@@ -17,8 +24,11 @@ fn get_input() -> String {
         guess = guess.trim().to_string();
         guess_length = guess.len();
     }
-
     return guess
+}
+
+fn guess_letter(word: &str, letter: String) -> bool {
+    return word.contains(letter.as_str())
 }
 
 fn main() {
@@ -31,6 +41,20 @@ fn main() {
 fn can_choose_word() {
     let chosen_word = choose_word(WORD_LIST); 
     assert_eq!(true, WORD_LIST.contains(&chosen_word.as_str()));
+}
+
+#[test]
+fn can_guess_letter_correct() {
+    let word = "apple";
+    let guess = String::from("a"); 
+    assert_eq!(true, guess_letter(word, guess));
+}
+
+#[test]
+fn can_guess_letter_incorrect() {
+    let word = "apple";
+    let guess = String::from("b"); 
+    assert_eq!(false, guess_letter(word, guess));
 }
 
 #[test]
