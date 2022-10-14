@@ -36,19 +36,27 @@ fn guess_letter(word: &str, letter: String) -> bool {
     return word.contains(letter.as_str())
 }
 
-fn update_correct_letters(word: &str, letter: String, correct_letters: &mut HashSet<String>) -> bool {
+fn update_user_letters(word: &str, letter: String, user_letters: &mut HashSet<String>) -> bool {
     let letter_exists: bool = guess_letter(word, letter.clone());
     if letter_exists {
-        correct_letters.insert(letter);
+        user_letters.insert(letter);
         return true
     }
     return false
 }
 
-fn print_word(word: &str, correct_letters: &HashSet<String>) -> String {
+fn get_correct_letters(word: &str) -> HashSet<String> {
+    let mut letters: HashSet<String> = HashSet::new();
+    for letter in word.chars() {
+        letters.insert(letter.to_string());
+    }
+    return letters
+}
+
+fn print_word(word: &str, user_letters: &HashSet<String>) -> String {
     let mut output = String::new();
     for letter in word.chars() {
-        if correct_letters.contains(&letter.to_string()) {
+        if user_letters.contains(&letter.to_string()) {
             output.push(letter);
             output.push(' ');
         } else {
@@ -60,20 +68,25 @@ fn print_word(word: &str, correct_letters: &HashSet<String>) -> String {
 }
 
 fn main() {
-    print!("\x1B[2J\x1B[1;1H"); //Clears the screen
-    let chosen_word = choose_word(WORD_LIST);
     let mut guesses = 0;
     const MAX_GUESSES: u32 = 6;
-    let mut correct_letters: HashSet<String> = HashSet::new();
+    let chosen_word = choose_word(WORD_LIST);
+    let mut user_letters: HashSet<String> = HashSet::new();
+    let correct_letters: HashSet<String> = get_correct_letters(&chosen_word);
 
+    print!("\x1B[2J\x1B[1;1H"); //Clears the screen
     println!("Welcome to Hangman!");
     println!("A word has been chosen, it is {} letters long", chosen_word.len());
 
     while guesses < MAX_GUESSES {
-
+        if user_letters.len() == correct_letters.len() {
+            println!("Congradulations, you win!");
+            println!("Thanks for playing :0");
+            return
+        }
         println!("Guess a letter");
         let guess = get_input();
-        let letter_exists = update_correct_letters(&chosen_word, guess, &mut correct_letters);
+        let letter_exists = update_user_letters(&chosen_word, guess, &mut user_letters);
         print!("\x1B[2J\x1B[1;1H"); //Clears the screen
         if letter_exists {
             println!("Correct!");
@@ -82,8 +95,7 @@ fn main() {
             guesses += 1;
         }
         println!("You have {} guesses left", MAX_GUESSES - guesses);
-        println!("{}", print_word(&chosen_word, &correct_letters));
-
+        println!("{}", print_word(&chosen_word, &user_letters));
     }
 
     println!("You lose!");
@@ -119,25 +131,25 @@ fn can_guess_letter_incorrect() {
 
 #[test]
 fn can_update_letters_correct() {
-    let mut correct_letters: HashSet<String> = HashSet::new();
+    let mut user_letters: HashSet<String> = HashSet::new();
     let chosen_word = String::from("HIPPO");
     let guess = String::from("P");
-    assert_eq!(update_correct_letters(chosen_word.as_str(), guess, &mut correct_letters), true);
+    assert_eq!(update_user_letters(chosen_word.as_str(), guess, &mut user_letters), true);
 }
 
 #[test]
 fn can_update_letters_incorrect() {
-    let mut correct_letters: HashSet<String> = HashSet::new();
+    let mut user_letters: HashSet<String> = HashSet::new();
     let chosen_word = String::from("HIPPO");
     let guess = String::from("A");
-    assert_eq!(update_correct_letters(chosen_word.as_str(), guess, &mut correct_letters), false);
+    assert_eq!(update_user_letters(chosen_word.as_str(), guess, &mut user_letters), false);
 }
 
 #[test]
 fn can_print_word() {
-    let mut correct_letters: HashSet<String> = HashSet::new();
+    let mut user_letters: HashSet<String> = HashSet::new();
     let chosen_word = String::from("HIPPO");
     let guess = String::from("H");
-    update_correct_letters(chosen_word.as_str(), guess, &mut correct_letters);
-    assert_eq!(print_word(chosen_word.as_str(), &correct_letters), "H _ _ _ _ ");
+    update_user_letters(chosen_word.as_str(), guess, &mut user_letters);
+    assert_eq!(print_word(chosen_word.as_str(), &user_letters), "H _ _ _ _ ");
 }
