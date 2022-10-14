@@ -1,4 +1,4 @@
-use std::{collections::HashSet, hash::Hash}; //Storing correct letters
+use std::{collections::HashSet}; //Storing correct letters
 use rand::Rng; //Choosing random word
 
 const WORD_LIST: [&str; 50] = [
@@ -42,10 +42,22 @@ fn update_correct_letters(word: &str, letter: String, correct_letters: &mut Hash
     return false
 }
 
+fn print_word(word: &str, correct_letters: &HashSet<String>) -> String {
+    let mut output = String::new();
+    for letter in word.chars() {
+        if correct_letters.contains(&letter.to_string()) {
+            output.push(letter);
+            output.push(' ');
+        } else {
+            output.push('_');
+            output.push(' ');
+        }
+    }
+    return output;
+}
+
 fn main() {
     println!("Hello, world!");
-    let input = get_input();
-    println!("You entered: {}", input);
 }
 
 #[test]
@@ -89,4 +101,13 @@ fn can_update_letters_incorrect() {
     let chosen_word = String::from("Hippo");
     let guess = String::from("a");
     assert_eq!(update_correct_letters(chosen_word.as_str(), guess, &mut correct_letters), false);
+}
+
+#[test]
+fn can_print_word() {
+    let mut correct_letters: HashSet<String> = HashSet::new();
+    let chosen_word = String::from("Hippo");
+    let guess = String::from("H");
+    update_correct_letters(chosen_word.as_str(), guess, &mut correct_letters);
+    assert_eq!(print_word(chosen_word.as_str(), &correct_letters), "H _ _ _ _ ");
 }
