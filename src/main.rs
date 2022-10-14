@@ -1,5 +1,6 @@
 use std::{collections::HashSet}; //Storing correct letters
 use rand::Rng; //Choosing random word
+use std::io;
 
 const WORD_LIST: [&str; 50] = [
     "apple", "banana", "carrot", "dog", "elephant", "fig", "grape", "honey", "ice", "jelly", "kiwi",
@@ -15,7 +16,6 @@ fn choose_word(word_list: [&str; 50]) -> String {
     return word_list[rng].to_string().to_uppercase();
 }
 
-use std::io;
 fn get_input() -> String {
     let mut guess = String::new();
     let mut guess_length = 0;
