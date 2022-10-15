@@ -69,6 +69,7 @@ fn print_word(word: &str, user_letters: &HashSet<String>) -> String {
 
 fn main() {
     let mut guesses = 0;
+    let mut game_won = false;
     const MAX_GUESSES: u32 = 6;
     let chosen_word = choose_word(WORD_LIST);
     let mut user_letters: HashSet<String> = HashSet::new();
@@ -80,9 +81,8 @@ fn main() {
 
     while guesses < MAX_GUESSES {
         if user_letters.len() == correct_letters.len() {
-            println!("Congradulations, you win!");
-            println!("Thanks for playing :0");
-            return
+            game_won = true;
+            break; 
         }
         println!("Guess a letter");
         let guess = get_input();
@@ -98,9 +98,16 @@ fn main() {
         println!("{}", print_word(&chosen_word, &user_letters));
     }
 
-    println!("You lose!");
-    println!("The word was: {}", chosen_word);
-
+    if game_won {
+        print!("\x1B[2J\x1B[1;1H"); //Clears the screen
+        println!("Congradulations, You won!");
+    } else {
+        print!("\x1B[2J\x1B[1;1H"); //Clears the screen
+        println!("You lost!");
+        println!("The word was {}", chosen_word);
+    }
+    
+    return 
 }
 
 #[test]
