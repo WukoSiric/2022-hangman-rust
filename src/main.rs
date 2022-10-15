@@ -3,12 +3,12 @@ use rand::Rng; //Choosing random word
 use std::io;
 
 const WORD_LIST: [&str; 50] = [
-    "apple", "banana", "carrot", "dog", "elephant", "fig", "grape", "honey", "ice", "jelly", "kiwi",
-    "lemon", "mango", "nut", "orange", "peach", "quince", "raspberry", "strawberry", "tomato",
-    "unicorn", "vanilla", "watermelon", "xenon", "yogurt", "zucchini", "aardvark", "bear", "cat",
-    "dolphin", "eagle", "fox", "giraffe", "hippo", "iguana", "jaguar", "kangaroo", "lemur", "mouse",
-    "newt", "octopus", "panda", "quail", "raccoon", "seal", "tiger", "urchin", "vulture", "wombat",
-    "xerus"
+    "APPLE", "BANANA", "CARROT", "DOG", "ELEPHANT", "FIG", "GRAPE", "HONEY", "ICE", "JELLY", "KIWI",
+    "LEMON", "MANGO", "NUT", "ORANGE", "PEACH", "QUINCE", "RASPBERRY", "STRAWBERRY", "TOMATO",
+    "UNICORN", "VANILLA", "WATERMELON", "XENON", "YOGURT", "ZUCCHINI", "AARDVARK", "BEAR", "CAT",
+    "DOLPHIN", "EAGLE", "FOX", "GIRAFFE", "HIPPO", "IGUANA", "JAGUAR", "KANGAROO", "LEMUR", "MOUSE",
+    "NEWT", "OCTOPUS", "PANDA", "QUAIL", "RACCOON", "SEAL", "TIGER", "URCHIN", "VULTURE", "WOMBAT",
+    "XERUS"
 ];
 
 fn choose_word(word_list: [&str; 50]) -> String {
@@ -106,7 +106,7 @@ fn main() {
         println!("You lost!");
         println!("The word was {}", chosen_word);
     }
-    
+
     return 
 }
 
